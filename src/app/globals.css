@@ -1,0 +1,18 @@
+/* src/app/globals.css */
+@import "tailwindcss";
+
+@theme {
+  --color-rameez-red: #8B1D20;
+  --color-rameez-gold: #B89047;
+}
+.embla__slide {
+  flex: 0 0 25%; /* 4 cards visible at a time */
+  min-width: 0;
+}
+
+/* For mobile devices, make it 2 cards visible */
+@media (max-width: 768px) {
+  .embla__slide {
+    flex: 0 0 50%;
+  }
+}
