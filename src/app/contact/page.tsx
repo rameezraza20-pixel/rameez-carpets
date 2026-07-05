@@ -1,8 +1,35 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Phone, Mail, MapPin, Globe } from "lucide-react";
 
 export default function ContactPage() {
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('submitting');
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch('/api/send-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, formName: "Contact Us Page" }),
+      });
+
+      if (res.ok) {
+        setStatus('success');
+        e.currentTarget.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch (err) {
+      setStatus('error');
+    }
+  };
+
   return (
     <div className="bg-[#F5F2EC] min-h-screen text-[#1A1F2B] py-20 px-6">
       <div className="container mx-auto max-w-6xl">
@@ -53,27 +80,63 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Map Placeholder */}
             <div className="mt-8 bg-gray-200 h-64 flex items-center justify-center rounded border border-gray-300">
-              <p className="text-gray-500">
-
-                
-              </p>
+              <p className="text-gray-500">Map Location</p>
             </div>
           </div>
 
           {/* Contact Form */}
           <div className="bg-white p-8 rounded shadow-sm border border-gray-100">
             <h3 className="text-2xl font-bold mb-6">Send Us a Message</h3>
-            <form className="space-y-4">
-              <input type="text" placeholder="Your Name" className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-700" />
-              <input type="email" placeholder="Email Address" className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-700" />
-              <input type="text" placeholder="Subject" className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-700" />
-              <textarea placeholder="Message" rows={4} className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-700"></textarea>
-              <button type="submit" className="w-full bg-[#1A1F2B] text-white py-4 font-bold rounded hover:bg-black transition">
-                Send Message
-              </button>
-            </form>
+            
+            {status === 'success' ? (
+              <div className="p-4 bg-green-50 text-green-700 rounded font-bold text-center">
+                Message sent successfully! We will get back to you soon.
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <input 
+                  name="name" 
+                  type="text" 
+                  placeholder="Your Name" 
+                  required 
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-700" 
+                />
+                <input 
+                  name="email" 
+                  type="email" 
+                  placeholder="Email Address" 
+                  required 
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-700" 
+                />
+                <input 
+                  name="subject" 
+                  type="text" 
+                  placeholder="Subject" 
+                  required 
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-700" 
+                />
+                <textarea 
+                  name="message" 
+                  placeholder="Message" 
+                  rows={4} 
+                  required 
+                  className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:border-red-700"
+                ></textarea>
+                
+                <button 
+                  type="submit" 
+                  disabled={status === 'submitting'}
+                  className="w-full bg-[#1A1F2B] text-white py-4 font-bold rounded hover:bg-black transition disabled:opacity-50"
+                >
+                  {status === 'submitting' ? 'Sending...' : 'Send Message'}
+                </button>
+                
+                {status === 'error' && (
+                  <p className="text-red-600 text-sm text-center">Something went wrong. Please try again.</p>
+                )}
+              </form>
+            )}
           </div>
         </div>
       </div>

@@ -22,7 +22,7 @@ const Navbar = () => {
       <div className="hidden md:flex w-full bg-[#111111] text-white py-1.5 px-6 md:px-16 text-[10px] justify-between items-center uppercase tracking-widest">
         <span>Leading Carpet Supplier Across GCC</span>
         <div className="flex gap-6">
-          <a href="tel:+971504943795" className="hover:text-red-500 transition">Phone: +971 50 494 3795</a>
+          <a href="tel:+971563775899" className="hover:text-red-500 transition">Phone: +971 56 377 5899</a>
           <a href="mailto:info@rameezcarpets.com" className="hover:text-red-500 transition">Email: info@rameezcarpets.com</a>
         </div>
       </div>

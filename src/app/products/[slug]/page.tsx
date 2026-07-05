@@ -139,24 +139,57 @@ export default function ProductPage() {
       </section>
 
       {/* Modal Popup */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6">
-          <div className="bg-white p-8 rounded-lg max-w-md w-full relative">
-            <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4"><X size={24}/></button>
-            <h2 className="text-2xl font-bold mb-4">Get the Catalogue</h2>
-            {!submitted ? (
-              <form action="https://formspree.io/f/YOUR_FORMSPREE_ENDPOINT" method="POST" onSubmit={() => setSubmitted(true)}>
-                <input type="hidden" name="Product" value={product.title} />
-                <input type="text" name="name" placeholder="Full Name" required className="w-full p-3 mb-3 border rounded" />
-                <input type="email" name="email" placeholder="Email Address" required className="w-full p-3 mb-4 border rounded" />
-                <button type="submit" className="w-full bg-red-700 text-white py-3 rounded font-bold">Submit & Download</button>
-              </form>
-            ) : (
-              <a href="/downloads/catalogue.pdf" download className="block text-center bg-green-600 text-white py-3 rounded font-bold">Click to Download PDF</a>
-            )}
-          </div>
+{isModalOpen && (
+  <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6">
+    <div className="bg-white p-8 rounded-lg max-w-md w-full relative">
+      <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4"><X size={24}/></button>
+      <h2 className="text-2xl font-bold mb-4">Get the Catalogue</h2>
+      
+      {!submitted ? (
+       <form 
+  onSubmit={async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      setSubmitted(true);
+    } else {
+      alert("Failed to send email.");
+    }
+  }}
+>
+  {/* Your inputs remain exactly the same as before */}
+  <input type="hidden" name="product" value={product.title} />
+  <input type="text" name="name" placeholder="Full Name" required className="w-full p-3 mb-3 border rounded" />
+  <input type="email" name="email" placeholder="Email Address" required className="w-full p-3 mb-3 border rounded" />
+  <input type="tel" name="phone" placeholder="WhatsApp / Mobile Number" required className="w-full p-3 mb-4 border rounded" />
+  
+  <button type="submit" className="w-full bg-red-700 text-white py-3 rounded font-bold">
+    Submit & Download
+  </button>
+</form>
+      ) : (
+        <div className="text-center">
+          <p className="mb-4 text-green-700 font-bold">Thank you! Your details have been received.</p>
+          <a 
+            href="/downloads/catalogue.pdf" 
+            download 
+            className="block text-center bg-green-600 text-white py-3 rounded font-bold"
+          >
+            Click to Download PDF
+          </a>
         </div>
       )}
+    </div>
+  </div>
+)}
 
      
     </main>
