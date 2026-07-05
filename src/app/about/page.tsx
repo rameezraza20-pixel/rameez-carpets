@@ -88,7 +88,7 @@ export default function AboutPage() {
             </p>
           </div>
           <div className="relative w-full aspect-[16/9] bg-gray-50 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-            <Image src="/world-map.png" alt="Export regions" fill className="object-cover" />
+            <Image src="/world-map.webp" alt="Export regions" fill className="object-cover" />
           </div>
         </div>
       </div>

@@ -79,10 +79,18 @@ export default function ContactPage() {
                 <p className="text-sm text-gray-600">www.rameezcarpets.com</p>
               </div>
             </div>
-
-            <div className="mt-8 bg-gray-200 h-64 flex items-center justify-center rounded border border-gray-300">
-              <p className="text-gray-500">Map Location</p>
-            </div>
+{/* Interactive Map */}
+<div className="mt-8 h-64 w-full rounded border border-gray-300 overflow-hidden">
+  <iframe 
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3606.582236894086!2d55.61868357538237!3d25.33330052737677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f70000000001%3A0x0!2zMjUnMjAnMDAuMCJOIDU1wrAzNycyNS4wIkU!5e0!3m2!1sen!2sae!4v1720207000000!5m2!1sen!2sae" 
+    width="100%" 
+    height="100%" 
+    style={{ border: 0 }} 
+    allowFullScreen 
+    loading="lazy" 
+    referrerPolicy="no-referrer-when-downgrade"
+  ></iframe>
+</div>
           </div>
 
           {/* Contact Form */}

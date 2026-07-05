@@ -108,7 +108,7 @@ export default function ExportPage() {
             <h1 className="text-5xl md:text-6xl font-bold leading-[1.1] mb-6 text-white">{active.heroTitle}</h1>
             <p className="text-gray-200 mb-8 leading-relaxed">{active.heroDesc}</p>
             <div className="flex flex-wrap gap-4">
-              <a href="https://wa.me/971563758899" className="bg-[#2D7D5C] text-white px-8 py-4 rounded font-bold">{active.btnQuote}</a>
+              <a href="https://wa.me/971563775899" className="bg-[#2D7D5C] text-white px-8 py-4 rounded font-bold">{active.btnQuote}</a>
               <a href="#shipping-details" className="border border-gray-400 text-white px-8 py-4 rounded font-bold hover:bg-white hover:text-black transition">{active.btnShip}</a>
             </div>
           </div>

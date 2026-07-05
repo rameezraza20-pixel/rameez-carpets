@@ -67,7 +67,7 @@ const productDatabase: any = {
     category: "Specialized", title: "Mosque Carpet", 
     description: "Soft, high-quality prayer carpets designed for comfort and durability.",
     image: "/mosque-hero.webp", features: ["Antimicrobial", "Comfort Cushion", "Easy Maintenance", "Traditional Designs"],
-    gallery: ["/m1.jpg", "/m2.jpg", "/m3.jpg", "/m4.jpg"]
+    gallery: ["/m1.webp", "/m2.webp", "/m3.webp", "/m4.webp"]
   }
   // Repeat this pattern for your other categories (VIP Runner, Grass Carpet, etc.)
 };
