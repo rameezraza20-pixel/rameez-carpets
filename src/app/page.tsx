@@ -141,7 +141,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold mb-4 text-green-700">Thank You!</h2>
           <p className="mb-6">Your details have been received.</p>
           <a 
-            href="/downloads/catalogue.pdf" 
+            href="/catalogue.pdf" 
             download 
             className="block w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 transition"
           >
