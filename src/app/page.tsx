@@ -1,8 +1,9 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Navbar from "../components/Navbar"; // Adjust path as needed
+import { useRouter } from "next/navigation";
+import Navbar from "../components/Navbar"; 
 import { 
   Building2, 
   Hotel, 
@@ -16,7 +17,13 @@ import {
 } from "lucide-react";
 
 export default function Home() {
-  // Updated 10 Core Product Categories 
+  const router = useRouter();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  
+  // Carousel slider native controller ref
+  const horizontalSliderRef = useRef<HTMLDivElement>(null);
+
   const categories = [
     { id: "1", title: "Wedding", img: "/images/wedding.jpg" },
     { id: "2", title: "Events/Exhibition", img: "/images/exhibition.jpg" },
@@ -30,7 +37,6 @@ export default function Home() {
     { id: "10", title: "Mosque Carpet", img: "/images/mosque.jpg" },
   ];
 
-  // Updated featured products categories to match the new list
   const featuredProducts = [
     { id: "RZ-101", name: "Royal Velvet Wedding White", category: "Wedding", img: "/images/feat1.webp" },
     { id: "RZ-102", name: "Premium Heavy Duty Event Blue", category: "Events/Exhibition", img: "/images/feat2.webp" },
@@ -45,13 +51,10 @@ export default function Home() {
     { id: "RZ-111", name: "Imperial Gold Ceremonial Carpet", category: "Events/Exhibition", img: "/images/feat11.webp" },
     { id: "RZ-112", name: "High-Traffic Tufted Office Tile", category: "Tile Carpet", img: "/images/feat12.webp" },
   ];
-  // Carousel slider native controller ref
-  const horizontalSliderRef = useRef<HTMLDivElement>(null);
 
   const scrollSlider = (direction: "left" | "right") => {
     if (horizontalSliderRef.current) {
       const { scrollLeft, clientWidth } = horizontalSliderRef.current;
-      // Scrolls exactly by one card viewport step length frame
       const offsetAmount = direction === "left" ? -clientWidth / 1.5 : clientWidth / 1.5;
       horizontalSliderRef.current.scrollTo({
         left: scrollLeft + offsetAmount,
@@ -63,40 +66,36 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white font-sans antialiased text-gray-900">
       
-      {/* --- 1. HERO SECTION WITH BACKGROUND IMAGE --- */}
-      {/* Height optimized from min-h-[75vh] to min-h-[65vh] */}
+      {/* Hero Section */}
       <section className="relative w-full min-h-[65vh] flex items-center bg-gray-100 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image 
-            src="/hero-bg.jpg" 
-            alt="Premium Carpets GCC"
-            fill
-            className="object-cover object-right md:object-center"
-            priority
-          />
+          <Image src="/hero-bg.jpg" alt="Premium Carpets GCC" fill className="object-cover object-right md:object-center" priority />
           <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent md:block hidden" />
           <div className="absolute inset-0 bg-white/90 md:hidden block" />
         </div>
 
         <div className="container mx-auto px-6 md:px-16 relative z-10 max-w-7xl w-full py-10">
           <div className="max-w-2xl">
-            <h4 className="text-xs font-extrabold tracking-widest text-rameez-gold uppercase mb-3">
-              Premium Wholesale Carpet Solutions
-            </h4>
+            <h4 className="text-xs font-extrabold tracking-widest text-rameez-gold uppercase mb-3">Premium Wholesale Carpet Solutions</h4>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight mb-4">
-              Premium Events/ExhibitionCarpets <br /> & Flooring Solutions <br />
+              Premium Events/Exhibition Carpets <br /> & Flooring Solutions <br />
               <span className="text-rameez-red">Across GCC</span>
             </h1>
             <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl">
-              Trusted by importers, distributors, hotels, event companies and construction 
-              firms for high-quality carpets and flooring solutions.
+              Trusted by importers, distributors, hotels, event companies and construction firms for high-quality carpets and flooring solutions.
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <button className="bg-rameez-red text-white text-xs font-bold px-6 py-3.5 rounded flex items-center gap-2 tracking-wider shadow-lg hover:bg-opacity-95 transition">
+              <button 
+                onClick={() => router.push("/contact")}
+                className="bg-rameez-red text-white text-xs font-bold px-6 py-3.5 rounded flex items-center gap-2 tracking-wider shadow-lg hover:bg-opacity-95 transition"
+              >
                 REQUEST QUOTE <span className="text-sm">→</span>
               </button>
-              <button className="border border-rameez-red text-rameez-red text-xs font-bold px-6 py-3.5 rounded flex items-center gap-2 tracking-wider hover:bg-red-50 transition">
+              <button 
+                onClick={() => setIsPopupOpen(true)}
+                className="border border-rameez-red text-rameez-red text-xs font-bold px-6 py-3.5 rounded flex items-center gap-2 tracking-wider hover:bg-red-50 transition"
+              >
                 DOWNLOAD CATALOG 
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
@@ -106,6 +105,53 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Popup Overlay */}
+{isPopupOpen && (
+  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-6">
+    <div className="bg-white p-8 rounded-lg max-w-md w-full relative">
+      <button 
+        onClick={() => { setIsPopupOpen(false); setSubmitted(false); }} 
+        className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl"
+      >
+        ✕
+      </button>
+      
+      {!submitted ? (
+        <>
+          <h2 className="text-2xl font-bold mb-4">Get the Catalogue</h2>
+          <form 
+            onSubmit={async (e) => {
+              e.preventDefault();
+              // Your API call to /api/send-lead goes here
+              setSubmitted(true);
+            }} 
+            className="space-y-4"
+          >
+            <input name="name" placeholder="Full Name" required className="w-full p-3 border rounded" />
+            <input name="email" type="email" placeholder="Email Address" required className="w-full p-3 border rounded" />
+            <input name="phone" type="tel" placeholder="WhatsApp / Mobile Number" required className="w-full p-3 border rounded" />
+            <button type="submit" className="w-full bg-red-700 text-white py-3 rounded font-bold hover:bg-red-800 transition">
+              Submit & Download
+            </button>
+          </form>
+        </>
+      ) : (
+        <div className="text-center py-6">
+          <h2 className="text-2xl font-bold mb-4 text-green-700">Thank You!</h2>
+          <p className="mb-6">Your details have been received.</p>
+          <a 
+            href="/downloads/catalogue.pdf" 
+            download 
+            className="block w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 transition"
+          >
+            Click to Download PDF
+          </a>
+        </div>
+      )}
+    </div>
+  </div>
+)}
 
       {/* --- 2. TRUST BAR SECTION --- */}
       <section className="w-full bg-white border-y border-gray-100 py-5">

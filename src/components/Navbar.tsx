@@ -1,14 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone, Mail } from "lucide-react";
 import Link from "next/link";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Helper function to create URL-safe slugs
   const getSlug = (name: string) => name.toLowerCase().replace(/\//g, '-').replace(/\s+/g, '-');
 
   const productList = [
@@ -19,11 +18,16 @@ const Navbar = () => {
 
   return (
     <header className="w-full bg-white border-b border-gray-100">
+      {/* Simplified Utility Bar */}
       <div className="hidden md:flex w-full bg-[#111111] text-white py-1.5 px-6 md:px-16 text-[10px] justify-between items-center uppercase tracking-widest">
-        <span>Leading Carpet Supplier Across GCC</span>
+        <span>Leading Carpet Supplier</span>
         <div className="flex gap-6">
-          <a href="tel:+971563775899" className="hover:text-red-500 transition">Phone: +971 56 377 5899</a>
-          <a href="mailto:info@rameezcarpets.com" className="hover:text-red-500 transition">Email: info@rameezcarpets.com</a>
+          <a href="tel:+971521928821" className="flex items-center gap-2 hover:text-red-500 transition">
+            <Phone size={12} /> +971 52 192 8821
+          </a>
+          <a href="mailto:info@rameezcarpets.com" className="flex items-center gap-2 hover:text-red-500 transition">
+            <Mail size={12} /> info@rameezcarpets.com
+          </a>
         </div>
       </div>
 
@@ -32,7 +36,7 @@ const Navbar = () => {
           <Image src="/logo.png" alt="Rameez Carpets Logo" width={140} height={35} className="object-contain cursor-pointer" />
         </Link>
         
-        <div className="hidden lg:flex items-center gap-4 xl:gap-8 text-[10px] xl:text-[11px] font-bold tracking-widest text-gray-900 uppercase whitespace-nowrap">
+        <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-[10px] xl:text-[11px] font-bold tracking-widest text-gray-900 uppercase whitespace-nowrap">
           <Link href="/" className="hover:text-red-700">Home</Link>
           
           <div className="relative" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
@@ -49,9 +53,8 @@ const Navbar = () => {
           </div>
           
           <Link href="/about" className="hover:text-red-700">About Us</Link>
-          <Link href="/export" className="hover:text-red-700">Export Markets</Link>
-          <Link href="/certifications" className="hover:text-red-700">Certifications</Link>
-          <Link href="/contact" className="hover:text-red-700">Contact Us</Link>
+          <Link href="/export" className="hover:text-red-700">Export</Link>
+          <Link href="/contact" className="hover:text-red-700">Contact</Link>
         </div>
 
         <button className="lg:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -60,14 +63,14 @@ const Navbar = () => {
 
         <div className="hidden lg:flex items-center gap-2 xl:gap-3">
           <a 
-    href="https://wa.me/971521928821" 
-    target="_blank" 
-    rel="noopener noreferrer"
-    className="border border-red-900 text-red-900 font-bold text-[9px] xl:text-[10px] px-3 py-2.5 rounded hover:bg-red-50 whitespace-nowrap"
-  >
-    CONTACT SALES
-  </a>
-          <a href="https://wa.me/971563775899" style={{ backgroundColor: "#25D366" }} className="text-white font-bold text-[9px] xl:text-[10px] px-4 py-2.5 rounded hover:opacity-90 whitespace-nowrap">WHATSAPP INQUIRY</a>
+            href="https://wa.me/971521928821" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="border border-red-900 text-red-900 font-bold text-[9px] xl:text-[10px] px-3 py-2.5 rounded hover:bg-red-50 whitespace-nowrap"
+          >
+            CONTACT SALES
+          </a>
+          <a href="https://wa.me/971563775899" style={{ backgroundColor: "#25D366" }} className="text-white font-bold text-[9px] xl:text-[10px] px-4 py-2.5 rounded hover:opacity-90 whitespace-nowrap">WHATSAPP</a>
         </div>
       </nav>
 

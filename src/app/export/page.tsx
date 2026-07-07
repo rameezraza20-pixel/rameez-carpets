@@ -177,10 +177,10 @@ export default function ExportPage() {
       <section className="bg-[#C81E3A] py-20 px-6 text-center text-white">
         <h2 className="text-4xl font-bold mb-6">{active.cta}</h2>
         <p className="max-w-xl mx-auto mb-10 opacity-90">{active.ctaDesc}</p>
-        <a href="https://wa.me/971563758899" className="inline-flex items-center gap-3 bg-[#1A1F2B] px-10 py-4 rounded font-bold"><MessageCircle size={20} /> {active.ctaBtn}</a>
+        <a href="https://wa.me/971563775899" className="inline-flex items-center gap-3 bg-[#1A1F2B] px-10 py-4 rounded font-bold"><MessageCircle size={20} /> {active.ctaBtn}</a>
       </section>
 
-      <a href="https://wa.me/971563758899" target="_blank" className="fixed bottom-6 right-6 bg-[#25D366] p-4 rounded-full shadow-2xl text-white z-50"><MessageCircle size={30} /></a>
+      <a href="https://wa.me/971563775899" target="_blank" className="fixed bottom-6 right-6 bg-[#25D366] p-4 rounded-full shadow-2xl text-white z-50"><MessageCircle size={30} /></a>
     </div>
   );
 }
