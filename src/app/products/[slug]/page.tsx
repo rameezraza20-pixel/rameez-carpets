@@ -110,7 +110,7 @@ export default function ProductPage() {
             ) : (
               <div className="text-center">
                 <p className="mb-4 text-green-700 font-bold">Thank you! Your details have been received.</p>
-                <a href="/downloads/catalogue.pdf" download className="block text-center bg-green-600 text-white py-3 rounded font-bold">
+                <a href="/catalogue.pdf" download className="block text-center bg-green-600 text-white py-3 rounded font-bold">
                   Click to Download PDF
                 </a>
               </div>
