@@ -18,6 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Rameez Carpets | Premium Flooring Solutions",
   description: "Leading carpet and flooring supplier across the UAE and GCC.",
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
