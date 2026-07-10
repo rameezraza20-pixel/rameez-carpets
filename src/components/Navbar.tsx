@@ -34,7 +34,6 @@ const Navbar = () => {
 
       {/* Main Nav */}
       <nav className="w-full bg-white px-6 md:px-16 py-4 flex items-center justify-between sticky top-0 z-50">
-        {/* Logo */}
         <div className="flex-shrink-0">
           <Link href="/" aria-label="Rameez Carpets Home">
             <Image src="/logo.png" alt="Rameez Carpets Logo" width={140} height={35} className="object-contain" />
@@ -61,17 +60,17 @@ const Navbar = () => {
           <Link href="/contact" className="hover:text-red-700">Contact</Link>
         </div>
 
-        {/* Action Buttons (Right Aligned) */}
+        {/* Action Buttons */}
         <div className="hidden lg:flex items-center gap-3 flex-shrink-0">
           <Link href="/contact" className="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-800 transition text-[10px] font-bold tracking-widest">
             CONTACT SALES
           </Link>
           <a 
-            href="https://wa.me/971521928821" 
+            href="https://wa.me/971563775899" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="bg-[#25D366] text-white px-4 py-2 rounded font-bold hover:bg-[#128C7E] transition flex items-center gap-2 text-[10px] tracking-widest"
-            aria-label="Chat with us on WhatsApp at +971 52 192 8821"
+            aria-label="Chat with us on WhatsApp at +971 56 377 5899"
           >
             <MessageCircle size={16} />
             WHATSAPP
@@ -84,7 +83,7 @@ const Navbar = () => {
         </button>
       </nav>
 
-      {/* Mobile Menu (remains the same) */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white border-t p-6 flex flex-col gap-5 text-[14px] font-bold uppercase tracking-widest">
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
@@ -99,6 +98,9 @@ const Navbar = () => {
             </div>
           )}
           <Link href="/about" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
+          <Link href="/export" onClick={() => setIsMobileMenuOpen(false)}>Export</Link>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+          <hr />
           <Link href="/contact" className="text-red-700" onClick={() => setIsMobileMenuOpen(false)}>Contact Sales</Link>
           <a href="https://wa.me/971563775899" className="text-[#25D366]" onClick={() => setIsMobileMenuOpen(false)} aria-label="Chat with us on WhatsApp at +971 56 377 5899">
             WhatsApp Us
