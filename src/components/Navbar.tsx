@@ -66,13 +66,12 @@ const Navbar = () => {
             CONTACT SALES
           </Link>
           <a 
-            href="https://wa.me/971563775899" 
+            href="https://wa.me/971521928821"
             target="_blank" 
             rel="noopener noreferrer" 
             className="bg-[#25D366] text-white px-4 py-2 rounded font-bold hover:bg-[#128C7E] transition flex items-center gap-2 text-[10px] tracking-widest"
-            aria-label="Chat with us on WhatsApp at +971 56 377 5899"
+            aria-label="Chat with us on WhatsApp at +971 52 192 8821"
           >
-            <MessageCircle size={16} />
             WHATSAPP
           </a>
         </div>
