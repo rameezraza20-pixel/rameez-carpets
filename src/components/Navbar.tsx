@@ -18,21 +18,21 @@ const Navbar = () => {
 
   return (
     <header className="w-full bg-white border-b border-gray-100">
-      {/* Simplified Utility Bar */}
+      {/* Utility Bar */}
       <div className="hidden md:flex w-full bg-[#111111] text-white py-1.5 px-6 md:px-16 text-[10px] justify-between items-center uppercase tracking-widest">
         <span>Leading Carpet Supplier</span>
         <div className="flex gap-6">
-          <a href="tel:+971521928821" className="flex items-center gap-2 hover:text-red-500 transition">
+          <a href="tel:+971521928821" aria-label="Call us" className="flex items-center gap-2 hover:text-red-500 transition">
             <Phone size={12} /> +971 52 192 8821
           </a>
-          <a href="mailto:info@rameezcarpets.com" className="flex items-center gap-2 hover:text-red-500 transition">
+          <a href="mailto:info@rameezcarpets.com" aria-label="Email us" className="flex items-center gap-2 hover:text-red-500 transition">
             <Mail size={12} /> info@rameezcarpets.com
           </a>
         </div>
       </div>
 
       <nav className="w-full bg-white px-6 md:px-16 py-4 flex items-center justify-between sticky top-0 z-50">
-        <Link href="/" className="flex items-center">
+        <Link href="/" aria-label="Go to Homepage">
           <Image src="/logo.png" alt="Rameez Carpets Logo" width={140} height={35} className="object-contain cursor-pointer" />
         </Link>
         
@@ -40,7 +40,8 @@ const Navbar = () => {
           <Link href="/" className="hover:text-red-700">Home</Link>
           
           <div className="relative" onMouseEnter={() => setIsDropdownOpen(true)} onMouseLeave={() => setIsDropdownOpen(false)}>
-            <button className="hover:text-red-700">PRODUCTS ▾</button>
+            {/* Added aria-expanded to notify screen readers of menu state */}
+            <button aria-label="Toggle Products Menu" aria-expanded={isDropdownOpen} className="hover:text-red-700">PRODUCTS ▾</button>
             {isDropdownOpen && (
               <div className="absolute top-full left-0 w-56 bg-white border border-gray-100 shadow-xl py-2 z-50">
                 {productList.map((item, idx) => (
@@ -57,7 +58,8 @@ const Navbar = () => {
           <Link href="/contact" className="hover:text-red-700">Contact</Link>
         </div>
 
-        <button className="lg:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        {/* Added aria-label to the mobile toggle button */}
+        <button className="lg:hidden" aria-label="Toggle mobile navigation menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
 
@@ -66,11 +68,19 @@ const Navbar = () => {
             href="https://wa.me/971521928821" 
             target="_blank" 
             rel="noopener noreferrer"
+            aria-label="Contact our sales team on WhatsApp"
             className="border border-red-900 text-red-900 font-bold text-[9px] xl:text-[10px] px-3 py-2.5 rounded hover:bg-red-50 whitespace-nowrap"
           >
             CONTACT SALES
           </a>
-          <a href="https://wa.me/971563775899" style={{ backgroundColor: "#25D366" }} className="text-white font-bold text-[9px] xl:text-[10px] px-4 py-2.5 rounded hover:opacity-90 whitespace-nowrap">WHATSAPP</a>
+          <a 
+            href="https://wa.me/971563775899" 
+            style={{ backgroundColor: "#25D366" }} 
+            aria-label="Chat with us on WhatsApp"
+            className="text-white font-bold text-[9px] xl:text-[10px] px-4 py-2.5 rounded hover:opacity-90 whitespace-nowrap"
+          >
+            WHATSAPP
+          </a>
         </div>
       </nav>
 
