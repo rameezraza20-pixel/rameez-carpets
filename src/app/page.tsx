@@ -24,6 +24,13 @@ export default function Home() {
   // Carousel slider native controller ref
   const horizontalSliderRef = useRef<HTMLDivElement>(null);
 
+  const handleDownloadClick = () => {
+    // 1. Close the popup
+    setIsPopupOpen(false);
+    // 2. Reset the submission state so it's fresh next time
+    setSubmitted(false);
+  };
+
   const categories = [
     { id: "1", title: "Wedding", img: "/images/wedding.jpg" },
     { id: "2", title: "Events/Exhibition", img: "/images/exhibition.jpg" },
@@ -106,52 +113,53 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Popup Overlay */}
-{isPopupOpen && (
-  <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-6">
-    <div className="bg-white p-8 rounded-lg max-w-md w-full relative">
-      <button 
-        onClick={() => { setIsPopupOpen(false); setSubmitted(false); }} 
-        className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl"
-      >
-        ✕
-      </button>
-      
-      {!submitted ? (
-        <>
-          <h2 className="text-2xl font-bold mb-4">Get the Catalogue</h2>
-          <form 
-            onSubmit={async (e) => {
-              e.preventDefault();
-              // Your API call to /api/send-lead goes here
-              setSubmitted(true);
-            }} 
-            className="space-y-4"
-          >
-            <input name="name" placeholder="Full Name" required className="w-full p-3 border rounded" />
-            <input name="email" type="email" placeholder="Email Address" required className="w-full p-3 border rounded" />
-            <input name="phone" type="tel" placeholder="WhatsApp / Mobile Number" required className="w-full p-3 border rounded" />
-            <button type="submit" className="w-full bg-red-700 text-white py-3 rounded font-bold hover:bg-red-800 transition">
-              Submit & Download
+{/* Popup Overlay */}
+      {isPopupOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-6">
+          <div className="bg-white p-8 rounded-lg max-w-md w-full relative">
+            <button 
+              onClick={() => { setIsPopupOpen(false); setSubmitted(false); }} 
+              className="absolute top-4 right-4 text-gray-500 hover:text-black text-2xl"
+              aria-label="Close popup"
+            >
+              ✕
             </button>
-          </form>
-        </>
-      ) : (
-        <div className="text-center py-6">
-          <h2 className="text-2xl font-bold mb-4 text-green-700">Thank You!</h2>
-          <p className="mb-6">Your details have been received.</p>
-          <a 
-            href="/catalogue.pdf" 
-            download 
-            className="block w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 transition"
-          >
-            Click to Download PDF
-          </a>
+            
+            {!submitted ? (
+              <>
+                <h2 className="text-2xl font-bold mb-4">Get the Catalogue</h2>
+                <form 
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    setSubmitted(true);
+                  }} 
+                  className="space-y-4"
+                >
+                  <input name="name" placeholder="Full Name" required className="w-full p-3 border rounded" />
+                  <input name="email" type="email" placeholder="Email Address" required className="w-full p-3 border rounded" />
+                  <input name="phone" type="tel" placeholder="WhatsApp / Mobile Number" required className="w-full p-3 border rounded" />
+                  <button type="submit" className="w-full bg-red-700 text-white py-3 rounded font-bold hover:bg-red-800 transition">
+                    Submit & Download
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="text-center py-6">
+                <h2 className="text-2xl font-bold mb-4 text-green-700">Thank You!</h2>
+                <p className="mb-6">Your details have been received.</p>
+                <a 
+                  href="/catalogue.pdf" 
+                  download 
+                  onClick={handleDownloadClick} // Trigger both actions here
+                  className="block w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 transition"
+                >
+                  Click to Download PDF
+                </a>
+              </div>
+            )}
+          </div>
         </div>
       )}
-    </div>
-  </div>
-)}
 
       {/* --- 2. TRUST BAR SECTION --- */}
       <section className="w-full bg-white border-y border-gray-100 py-5">

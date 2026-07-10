@@ -25,9 +25,14 @@ export default function ProductPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const handleDownloadClick = () => {
+    setIsModalOpen(false);
+    setSubmitted(false);
+  };
+
   if (!product) return <div className="py-20 text-center">Product not found.</div>;
 
-  return (
+ return (
     <main className="min-h-screen bg-white">
       <section className="relative h-[60vh] w-full flex items-center justify-center text-white">
         <Image src={product.image || "/fallback.jpg"} alt={product.title} fill className="object-cover brightness-[0.6]" />
@@ -73,7 +78,7 @@ export default function ProductPage() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6">
           <div className="bg-white p-8 rounded-lg max-w-md w-full relative">
-            <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4"><X size={24}/></button>
+            <button onClick={() => { setIsModalOpen(false); setSubmitted(false); }} className="absolute top-4 right-4"><X size={24}/></button>
             <h2 className="text-2xl font-bold mb-4">Get the Catalogue</h2>
             
             {!submitted ? (
@@ -94,7 +99,7 @@ export default function ProductPage() {
                   if (res.ok) {
                     setSubmitted(true);
                   } else {
-                    alert("Failed to send email. Please ensure your API settings are correct.");
+                    alert("Failed to send. Please check API settings.");
                   }
                 }}
               >
@@ -110,7 +115,12 @@ export default function ProductPage() {
             ) : (
               <div className="text-center">
                 <p className="mb-4 text-green-700 font-bold">Thank you! Your details have been received.</p>
-                <a href="/catalogue.pdf" download className="block text-center bg-green-600 text-white py-3 rounded font-bold">
+                <a 
+                  href="/catalogue.pdf" 
+                  download 
+                  onClick={handleDownloadClick} // Triggered: Closes modal & resets state
+                  className="block text-center bg-green-600 text-white py-3 rounded font-bold"
+                >
                   Click to Download PDF
                 </a>
               </div>
