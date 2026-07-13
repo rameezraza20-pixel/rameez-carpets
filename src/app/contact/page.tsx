@@ -9,7 +9,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   setStatus('submitting');
 
-  const formData = new FormData(e.currentTarget);
+  // 1. Store the form reference immediately
+  const form = e.currentTarget; 
+  const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
   try {
@@ -21,12 +23,11 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     const result = await res.json();
 
-    // Check if the response exists and is successful
-    if (result && result.success === true) {
+    if (res.ok && result.success) {
       setStatus('success');
-      e.currentTarget.reset();
+      // 2. Use the stored reference here
+      form.reset(); 
     } else {
-      console.error("Server returned failure:", result);
       setStatus('error');
     }
   } catch (err) {
