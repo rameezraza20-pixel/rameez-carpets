@@ -13,7 +13,7 @@ export async function sendEmail({ subject, text }: { subject: string; text: stri
   });
 
   return await transporter.sendMail({
-    from: '<info@rameezcarpets.com>',
+    from: '"Rameez Carpets" <info@rameezcarpets.com>',
     to: 'info@rameezcarpets.com',
     subject: subject,
     text: text,
