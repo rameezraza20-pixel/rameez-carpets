@@ -5,30 +5,35 @@ import { Phone, Mail, MapPin, Globe } from "lucide-react";
 export default function ContactPage() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus('submitting');
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setStatus('submitting');
 
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
+  const formData = new FormData(e.currentTarget);
+  const data = Object.fromEntries(formData.entries());
 
-    try {
-      const res = await fetch('/api/send-lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, formName: "Contact Us Page" }),
-      });
+  try {
+    const res = await fetch('/api/send-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...data, formName: "Contact Us Page" }),
+    });
 
-      if (res.ok) {
-        setStatus('success');
-        e.currentTarget.reset();
-      } else {
-        setStatus('error');
-      }
-    } catch (err) {
+    // Check if response is JSON (sometimes servers return HTML errors like 404/500 pages)
+    const result = await res.json().catch(() => ({ success: false }));
+
+    if (res.ok && result.success) {
+      setStatus('success');
+      e.currentTarget.reset();
+    } else {
+      console.error("API Error Details:", result); // Look at this in Browser Console!
       setStatus('error');
     }
-  };
+  } catch (err) {
+    console.error("Network Error:", err);
+    setStatus('error');
+  }
+};
 
   return (
     <div className="bg-[#F5F2EC] min-h-screen text-[#1A1F2B] py-20 px-6">
@@ -82,7 +87,7 @@ export default function ContactPage() {
 {/* Interactive Map */}
 <div className="mt-8 h-64 w-full rounded border border-gray-300 overflow-hidden">
   <iframe 
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3606.582236894086!2d55.61868357538237!3d25.33330052737677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f70000000001%3A0x0!2zMjUnMjAnMDAuMCJOIDU1wrAzNycyNS4wIkU!5e0!3m2!1sen!2sae!4v1720207000000!5m2!1sen!2sae" 
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3606.1976362660557!2d55.6321706!3d25.3311483!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f31c9c9f5f23%3A0xd539f2f29f2faa70!2sExhibition%20%26%20Office%20Carpet%20Supplier%20%26%20Installation%20Dubai%20-%20Rameez%20Carpets!5e0!3m2!1sen!2sae!4v1783938770433!5m2!1sen!2sae" 
     width="100%" 
     height="100%" 
     style={{ border: 0 }} 
