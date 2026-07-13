@@ -1,19 +1,20 @@
 import nodemailer from 'nodemailer';
 
 export async function sendEmail({ subject, text }: { subject: string; text: string }) {
+  // Use port 465 and secure: true for Namecheap Private Email
   const transporter = nodemailer.createTransport({
-    host: 'mail.privateemail.com', // Namecheap SMTP Host
-    port: 465,                     // SSL Port
-    secure: true,                  // Use SSL
+    host: 'mail.privateemail.com',
+    port: 465,
+    secure: true, 
     auth: {
-      user: 'info@rameezcarpets.com', // Your full email address
-      pass: 'process.env.EMAIL_PASSWORD',    // The password for THIS email account
+      user: 'info@rameezcarpets.com',
+      pass: process.env.EMAIL_PASSWORD, // Ensure this exists in Vercel
     },
   });
 
-  await transporter.sendMail({
-    from: '"Website Lead" <info@rameezcarpets.com>',
-    to: 'info@rameezcarpets.com', // Where you want to receive the leads
+  return await transporter.sendMail({
+    from: '"Rameez Carpets" <info@rameezcarpets.com>',
+    to: 'info@rameezcarpets.com',
     subject: subject,
     text: text,
   });
