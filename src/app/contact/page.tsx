@@ -19,18 +19,18 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       body: JSON.stringify({ ...data, formName: "Contact Us Page" }),
     });
 
-    // Check if response is JSON (sometimes servers return HTML errors like 404/500 pages)
-    const result = await res.json().catch(() => ({ success: false }));
+    const result = await res.json();
 
-    if (res.ok && result.success) {
+    // Check if the response exists and is successful
+    if (result && result.success === true) {
       setStatus('success');
       e.currentTarget.reset();
     } else {
-      console.error("API Error Details:", result); // Look at this in Browser Console!
+      console.error("Server returned failure:", result);
       setStatus('error');
     }
   } catch (err) {
-    console.error("Network Error:", err);
+    console.error("Submission error:", err);
     setStatus('error');
   }
 };
