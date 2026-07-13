@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { CheckCircle, ShieldCheck, Truck, Users, X } from "lucide-react";
 
-// (productDatabase remains unchanged as per your provided code)
+// (productDatabase remains unchanged)
 const productDatabase: any = {
   "wedding": { category: "Wedding", title: "Luxury Wedding Carpets", description: "Create an unforgettable entrance with our premium wedding aisle runners. Custom-fit for any venue size.", image: "/wedding-hero.webp", features: ["Luxury Velvet Finish", "Anti-Slip Backing", "Customizable Colors", "Fast Setup"], gallery: ["/w1.webp", "/w2.webp", "/w3.webp", "/w4.webp"] },
   "events-exhibition": { category: "Events & Exhibition", title: "Events & Exhibition Flooring", description: "The gold standard for exhibition contractors. High-durability, flame-retardant flooring for trade shows.", image: "/events-hero.webp", features: ["Flame Retardant (SGS Certified)", "High Traffic Durability", "Easy Roll-out", "Bulk Stock Available"], gallery: ["/e1.webp", "/e2.webp", "/e3.webp", "/e4.webp"] },
@@ -19,21 +19,29 @@ const productDatabase: any = {
 };
 
 export default function ProductPage() {
-  const slug = useParams()?.slug as string;
+  const params = useParams();
+  const slug = params?.slug as string;
   const product = productDatabase[slug];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleDownloadClick = () => {
+  const triggerDownload = () => {
+    const link = document.createElement("a");
+    link.href = "/catalogue.pdf";
+    link.setAttribute("download", "Rameez-Carpets-Catalogue.pdf");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     setIsModalOpen(false);
     setSubmitted(false);
   };
 
   if (!product) return <div className="py-20 text-center">Product not found.</div>;
 
- return (
+  return (
     <main className="min-h-screen bg-white">
+      {/* ... Hero and Overview sections remain same as your original code ... */}
       <section className="relative h-[60vh] w-full flex items-center justify-center text-white">
         <Image src={product.image || "/fallback.jpg"} alt={product.title} fill className="object-cover brightness-[0.6]" />
         <div className="relative z-10 text-center px-6">
@@ -78,15 +86,16 @@ export default function ProductPage() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-6">
           <div className="bg-white p-8 rounded-lg max-w-md w-full relative">
-            <button onClick={() => { setIsModalOpen(false); setSubmitted(false); }} className="absolute top-4 right-4"><X size={24}/></button>
+            <button onClick={() => setIsModalOpen(false)} className="absolute top-4 right-4"><X size={24}/></button>
             <h2 className="text-2xl font-bold mb-4">Get the Catalogue</h2>
             
             {!submitted ? (
               <form 
-                onSubmit={async (e) => {
+                onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
                   e.preventDefault();
                   setLoading(true);
-                  const formData = new FormData(e.currentTarget);
+                  const form = e.currentTarget;
+                  const formData = new FormData(form);
                   const data = Object.fromEntries(formData.entries());
 
                   const res = await fetch('/api/send-lead', {
@@ -96,7 +105,8 @@ export default function ProductPage() {
                   });
 
                   setLoading(false);
-                  if (res.ok) {
+                  const result = await res.json();
+                  if (res.ok && result.success) {
                     setSubmitted(true);
                   } else {
                     alert("Failed to send. Please check API settings.");
@@ -107,7 +117,6 @@ export default function ProductPage() {
                 <input type="text" name="name" placeholder="Full Name" required className="w-full p-3 mb-3 border rounded" />
                 <input type="email" name="email" placeholder="Email Address" required className="w-full p-3 mb-3 border rounded" />
                 <input type="tel" name="phone" placeholder="WhatsApp / Mobile Number" required className="w-full p-3 mb-4 border rounded" />
-                
                 <button type="submit" disabled={loading} className="w-full bg-red-700 text-white py-3 rounded font-bold hover:bg-red-800 disabled:opacity-50">
                   {loading ? "Sending..." : "Submit & Download"}
                 </button>
@@ -115,14 +124,12 @@ export default function ProductPage() {
             ) : (
               <div className="text-center">
                 <p className="mb-4 text-green-700 font-bold">Thank you! Your details have been received.</p>
-                <a 
-                  href="/catalogue.pdf" 
-                  download 
-                  onClick={handleDownloadClick} // Triggered: Closes modal & resets state
-                  className="block text-center bg-green-600 text-white py-3 rounded font-bold"
+                <button 
+                  onClick={triggerDownload}
+                  className="w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700"
                 >
                   Click to Download PDF
-                </a>
+                </button>
               </div>
             )}
           </div>
