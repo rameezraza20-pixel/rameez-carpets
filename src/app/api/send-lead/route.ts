@@ -13,12 +13,10 @@ export async function POST(req: Request) {
       text: text,
     });
 
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error("Mail Error:", error); // This logs the error in Vercel Logs
-    return NextResponse.json(
-      { success: false, error: error.message || "Failed to send email" }, 
-      { status: 500 }
-    );
+    // Explicitly return success status
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error("Mail Error:", error);
+    return NextResponse.json({ success: false }, { status: 500 });
   }
 }
