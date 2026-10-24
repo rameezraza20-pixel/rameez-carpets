@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 // Updated import path: '../' steps out of 'app' to reach 'components'
-import Navbar from "../components/Navbar"; 
-import Footer from "../components/Footer"; 
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Rameez Carpets | Premium Flooring Solutions",
   description: "Leading carpet and flooring supplier across the UAE and GCC.",
-  manifest: '/manifest.json',
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -34,14 +35,17 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-white text-gray-900">
         {/* Navbar is now globally applied */}
         <Navbar />
-        
+
         <main className="flex-grow">
           {children}
         </main>
-        
+
         {/* Footer is now globally applied */}
         <Footer />
       </body>
+
+      {/* Google Analytics 4 */}
+      <GoogleAnalytics gaId="G-HVVZ2EQDJL" />
     </html>
   );
 }
