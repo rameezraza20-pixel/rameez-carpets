@@ -14,7 +14,7 @@ const Navbar = () => {
   const productList = [
     "Wedding", "Events/Exhibition", "VIP Runner", "Grass Carpet", 
     "Vinyl Flooring", "Rugs", "SPC Flooring", "Tile Carpet", 
-    "Design Carpet", "Mosque Carpet"
+    "Design Carpet", "Mosque Carpet", "Loop Pile Carpets", "Cut Pile Carpets"
   ];
 
   return (
