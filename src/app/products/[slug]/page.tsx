@@ -157,7 +157,7 @@ const productDatabase: any = {
     title: "Cut Pile Carpets",
     description:
       "Discover our Cut Pile Carpet collection, featuring a soft, textured surface for residential and commercial interior applications. Contact us for available designs, colours and specifications.",
-    image:  "/loop-pile-hero.webp",
+    image:  "/cut-pile-hero.webp",
     features: [
       "Soft Cut Pile Texture",
       "Elegant Interior Appearance",
