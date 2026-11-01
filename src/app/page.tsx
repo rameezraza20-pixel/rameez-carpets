@@ -42,6 +42,8 @@ export default function Home() {
     { id: "8", title: "Tile Carpet", img: "/images/tiles.jpg" },
     { id: "9", title: "Design Carpet", img: "/images/design.jpg" },
     { id: "10", title: "Mosque Carpet", img: "/images/mosque.jpg" },
+    { id: "11", title: "Loop Pile Carpets", img: "" },
+    { id: "12", title: "Cut Pile Carpets", img: "" },
   ];
 
   const featuredProducts = [
@@ -200,17 +202,29 @@ export default function Home() {
             {categories.map((cat, index) => (
               <motion.div 
                 key={cat.id}
+                onClick={() => router.push(
+                  `/products/${cat.title.toLowerCase().replace(/\//g, "-").replace(/\s+/g, "-")}`
+                )}
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.2 }}
                 className="bg-white border border-gray-800 rounded overflow-hidden shadow-sm hover:shadow-xl transition group cursor-pointer"
               >
                 <div className="relative h-44 w-full bg-gray-100 overflow-hidden">
-                  <Image 
-                    src={cat.img} 
-                    alt={cat.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition duration-500"
-                  />
+                  {cat.img ? (
+                    <Image 
+                      src={cat.img} 
+                      alt={cat.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition duration-500"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-gray-200 via-gray-100 to-gray-300 text-gray-500">
+                      <span className="text-3xl">▧</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest mt-2">
+                        Image Coming Soon
+                      </span>
+                    </div>
+                  )}
                   <div className="absolute bottom-3 left-3 w-7 h-7 bg-rameez-red rounded-full flex items-center justify-center shadow-md">
                     <span className="text-[9px] text-white font-bold">★</span>
                   </div>
