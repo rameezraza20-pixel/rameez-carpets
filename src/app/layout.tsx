@@ -1,11 +1,14 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import {
+  GoogleAnalytics,
+  GoogleTagManager,
+} from "@next/third-parties/google";
 import "./globals.css";
-// Updated import path: '../' steps out of 'app' to reach 'components'
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
 
 const businessStructuredData = {
   "@context": "https://schema.org",
@@ -49,7 +52,6 @@ const businessStructuredData = {
           "@type": "ContactPoint",
           telephone: "+971521928821",
           contactType: "sales WhatsApp",
-          contactOption: "https://schema.org/WhatsApp",
           areaServed: ["AE", "SA", "KW", "QA", "BH", "OM"],
           availableLanguage: ["English"],
         },
@@ -161,25 +163,35 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-gray-900">
+
+        {/* Google Tag Manager */}
+        <GoogleTagManager gtmId="GTM-KRBWSTX9" />
+
+        {/* Business structured data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(businessStructuredData).replace(/</g, "\\u003c"),
+            __html: JSON.stringify(businessStructuredData).replace(
+              /</g,
+              "\\u003c"
+            ),
           }}
         />
-        {/* Navbar is now globally applied */}
+
+        {/* Global Navbar */}
         <Navbar />
 
         <main className="flex-grow">
           {children}
         </main>
 
-        {/* Footer is now globally applied */}
+        {/* Global Footer */}
         <Footer />
-      </body>
 
-      {/* Google Analytics 4 */}
-      <GoogleAnalytics gaId="G-HVVZ2EQDJL" />
+        {/* Existing Google Analytics 4 */}
+        <GoogleAnalytics gaId="G-HVVZ2EQDJL" />
+
+      </body>
     </html>
   );
 }
