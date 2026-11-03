@@ -23,8 +23,8 @@ const Navbar = () => {
       <div className="hidden md:flex w-full bg-[#111111] text-white py-1.5 px-6 md:px-16 text-[10px] justify-between items-center uppercase tracking-widest">
         <span>Leading Carpet Supplier</span>
         <div className="flex gap-6">
-          <a href="tel:+971521928821" className="flex items-center gap-2 hover:text-red-500 transition" aria-label="Call us at +971 52 192 8821">
-            <Phone size={12} /> +971 52 192 8821
+          <a href="tel:+971563775899" className="flex items-center gap-2 hover:text-red-500 transition" aria-label="Call us at +971 56 377 5899">
+            <Phone size={12} /> +971 56 377 5899
           </a>
           <a href="mailto:info@rameezcarpets.com" className="flex items-center gap-2 hover:text-red-500 transition" aria-label="Email us at info@rameezcarpets.com">
             <Mail size={12} /> info@rameezcarpets.com
@@ -70,7 +70,7 @@ const Navbar = () => {
             target="_blank" 
             rel="noopener noreferrer" 
             className="bg-[#25D366] text-white px-4 py-2 rounded font-bold hover:bg-[#128C7E] transition flex items-center gap-2 text-[10px] tracking-widest"
-            aria-label="Chat with us on WhatsApp at +971 52 192 8821"
+            aria-label="Chat with sales on WhatsApp at +971 52 192 8821"
           >
             WHATSAPP
           </a>
@@ -101,8 +101,8 @@ const Navbar = () => {
           <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
           <hr />
           <Link href="/contact" className="text-red-700" onClick={() => setIsMobileMenuOpen(false)}>Contact Sales</Link>
-          <a href="https://wa.me/971563775899" className="text-[#25D366]" onClick={() => setIsMobileMenuOpen(false)} aria-label="Chat with us on WhatsApp at +971 56 377 5899">
-            WhatsApp Us
+          <a href="https://wa.me/971521928821" className="text-[#25D366]" onClick={() => setIsMobileMenuOpen(false)} aria-label="Chat with sales on WhatsApp at +971 52 192 8821">
+            WhatsApp Sales
           </a>
         </div>
       )}
