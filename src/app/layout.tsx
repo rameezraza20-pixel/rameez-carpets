@@ -160,7 +160,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-gray-900">
-
         {/* Google Tag Manager */}
         <GoogleTagManager gtmId="GTM-KRBWSTX9" />
 
@@ -178,13 +177,11 @@ export default function RootLayout({
         {/* Global Navbar */}
         <Navbar />
 
-        <main className="flex-grow">
-          {children}
-        </main>
+        {/* Main Content */}
+        <main className="flex-grow">{children}</main>
 
         {/* Global Footer */}
         <Footer />
-
       </body>
     </html>
   );

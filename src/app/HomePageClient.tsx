@@ -20,6 +20,8 @@ export default function Home() {
   const router = useRouter();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+const [submitError, setSubmitError] = useState("");
   
   // Carousel slider native controller ref
   const horizontalSliderRef = useRef<HTMLDivElement>(null);
@@ -130,20 +132,92 @@ export default function Home() {
             {!submitted ? (
               <>
                 <h2 className="text-2xl font-bold mb-4">Get the Catalogue</h2>
-                <form 
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    setSubmitted(true);
-                  }} 
-                  className="space-y-4"
-                >
-                  <input name="name" placeholder="Full Name" required className="w-full p-3 border rounded" />
-                  <input name="email" type="email" placeholder="Email Address" required className="w-full p-3 border rounded" />
-                  <input name="phone" type="tel" placeholder="WhatsApp / Mobile Number" required className="w-full p-3 border rounded" />
-                  <button type="submit" className="w-full bg-red-700 text-white py-3 rounded font-bold hover:bg-red-800 transition">
-                    Submit & Download
-                  </button>
-                </form>
+                <form
+  onSubmit={async (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const res = await fetch("/api/send-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          formName: "Homepage Catalogue Request",
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error("Lead submission failed");
+      }
+
+      // Track only after the server confirms successful submission.
+      const dataLayerWindow = window as Window & {
+        dataLayer?: Array<Record<string, unknown>>;
+      };
+
+      dataLayerWindow.dataLayer = dataLayerWindow.dataLayer || [];
+      dataLayerWindow.dataLayer.push({
+        event: "generate_lead",
+        form_name: "Homepage Catalogue Request",
+      });
+
+      setSubmitted(true);
+      form.reset();
+    } catch (error) {
+      console.error("Catalogue submission error:", error);
+      setSubmitError("We couldn't submit your details. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }}
+  className="space-y-4"
+>
+  <input
+    name="name"
+    placeholder="Full Name"
+    required
+    className="w-full p-3 border rounded"
+  />
+
+  <input
+    name="email"
+    type="email"
+    placeholder="Email Address"
+    required
+    className="w-full p-3 border rounded"
+  />
+
+  <input
+    name="phone"
+    type="tel"
+    placeholder="WhatsApp / Mobile Number"
+    required
+    className="w-full p-3 border rounded"
+  />
+
+  {submitError && (
+    <p className="text-red-600 text-sm" role="alert">
+      {submitError}
+    </p>
+  )}
+
+  <button
+    type="submit"
+    disabled={isSubmitting}
+    className="w-full bg-red-700 text-white py-3 rounded font-bold hover:bg-red-800 transition disabled:opacity-50"
+  >
+    {isSubmitting ? "Submitting..." : "Submit & Download"}
+  </button>
+</form>
               </>
             ) : (
               <div className="text-center py-6">

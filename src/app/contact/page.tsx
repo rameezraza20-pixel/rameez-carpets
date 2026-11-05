@@ -23,13 +23,22 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
     const result = await res.json();
 
-    if (res.ok && result.success) {
-      setStatus('success');
-      // 2. Use the stored reference here
-      form.reset(); 
-    } else {
-      setStatus('error');
-    }
+  if (res.ok && result.success) {
+  const dataLayerWindow = window as Window & {
+    dataLayer?: Array<Record<string, unknown>>;
+  };
+
+  dataLayerWindow.dataLayer = dataLayerWindow.dataLayer || [];
+  dataLayerWindow.dataLayer.push({
+    event: "generate_lead",
+    form_name: "Contact Us Page",
+  });
+
+  setStatus("success");
+  form.reset();
+} else {
+  setStatus("error");
+}
   } catch (err) {
     console.error("Submission error:", err);
     setStatus('error');

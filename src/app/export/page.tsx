@@ -6,6 +6,8 @@ import { MessageCircle } from "lucide-react";
 export default function ExportPage() {
   const [lang, setLang] = useState<'en' | 'ar'>('en');
   const [showModal, setShowModal] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formStatus, setFormStatus] = useState<"success" | "error" | "">("");
 
   const t = {
     en: {
@@ -41,7 +43,22 @@ export default function ExportPage() {
       colorDesc: "Our most-ordered exhibition carpet colours for GCC trade shows and conferences. Custom colours available on bulk orders.",
       cta: "Ready to Order for Your GCC Exhibition?",
       ctaDesc: "Send your hall size, country and quantity on WhatsApp — we usually reply with pricing within a few hours.",
-      ctaBtn: "Chat on WhatsApp Now"
+      ctaBtn: "Chat on WhatsApp Now",
+      formTitle: "Request an Export Quote",
+      formDesc: "Tell us what you need and our sales team will get back to you.",
+      formName: "Full Name",
+      formCompany: "Company Name",
+      formEmail: "Business Email",
+      formCountry: "Country",
+      formPhone: "WhatsApp / Phone Number",
+      formProduct: "Product Interested In",
+      formQuantity: "Estimated Quantity",
+      formMessage: "Additional Requirements",
+      formSubmit: "Submit Quote Request",
+      formSending: "Submitting...",
+      formSuccess: "Thank you! Your enquiry has been sent successfully.",
+      formError: "Something went wrong. Please try again.",
+      formSelect: "Select a product",
     },
     ar: {
       heroTitle: <>سجاد المعارض <br /> يُصدر من الإمارات <br /> إلى كل ركن من <br /> <span className="text-red-600">دول الخليج</span></>,
@@ -76,11 +93,85 @@ export default function ExportPage() {
       colorDesc: "ألوان سجاد المعارض الأكثر طلباً للمؤتمرات في دول الخليج. تتوفر ألوان مخصصة للطلبات الكبيرة.",
       cta: "هل أنت مستعد للطلب لمعرضك في دول الخليج؟",
       ctaDesc: "أرسل مقاس القاعة، البلد، والكمية المطلوبة عبر واتساب — وسنقوم بالرد عليك بأسعارنا خلال ساعات.",
-      ctaBtn: "تحدث عبر واتساب الآن"
+      ctaBtn: "تحدث عبر واتساب الآن",
+      formTitle: "طلب عرض سعر للتصدير",
+      formDesc: "أخبرنا باحتياجاتك وسيتواصل معك فريق المبيعات.",
+      formName: "الاسم الكامل",
+      formCompany: "اسم الشركة",
+      formEmail: "البريد الإلكتروني للعمل",
+      formCountry: "الدولة",
+      formPhone: "رقم واتساب / الهاتف",
+      formProduct: "المنتج المطلوب",
+      formQuantity: "الكمية التقديرية",
+      formMessage: "متطلبات إضافية",
+      formSubmit: "إرسال طلب عرض السعر",
+      formSending: "جارٍ الإرسال...",
+      formSuccess: "شكراً لك! تم إرسال استفسارك بنجاح.",
+      formError: "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      formSelect: "اختر المنتج",
     }
   };
 
   const active = t[lang];
+  const handleExportSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setFormLoading(true);
+    setFormStatus("");
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const leadData = {
+      formName: "Export Quote Request",
+      language: lang,
+      page: "/export",
+      name: formData.get("name"),
+      company: formData.get("company"),
+      email: formData.get("email"),
+      country: formData.get("country"),
+      phone: formData.get("phone"),
+      product: formData.get("product"),
+      quantity: formData.get("quantity"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const res = await fetch("/api/send-lead", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(leadData),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok || !result.success) {
+        throw new Error("Failed to submit enquiry");
+      }
+
+      // Track only confirmed successful enquiries in Google Tag Manager.
+      const dataLayerWindow = window as Window & {
+        dataLayer?: Array<Record<string, unknown>>;
+      };
+
+      dataLayerWindow.dataLayer = dataLayerWindow.dataLayer || [];
+      dataLayerWindow.dataLayer.push({
+        event: "generate_lead",
+        form_name: "Export Quote Request",
+        language: lang,
+      });
+
+      setFormStatus("success");
+      form.reset();
+    } catch (error) {
+      console.error("Export form submission error:", error);
+      setFormStatus("error");
+    } finally {
+      setFormLoading(false);
+    }
+  };
 
   return (
     <div className="bg-[#F5F2EC] min-h-screen text-[#1A1F2B]" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
@@ -171,6 +262,177 @@ export default function ExportPage() {
               <div key={i} className="bg-[#10141D] p-3 border border-gray-800 rounded text-center"><div className="w-full aspect-video mb-3" style={{ backgroundColor: item.c }}></div></div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Export quote request form */}
+      <section id="export-quote" className="py-20 px-6 bg-white">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              {active.formTitle}
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              {active.formDesc}
+            </p>
+          </div>
+
+          <form
+            onSubmit={handleExportSubmit}
+            className="bg-[#F9F7F4] border border-gray-200 rounded-lg p-6 md:p-8 shadow-sm"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label htmlFor="export-name" className="block text-sm font-semibold mb-2">
+                  {active.formName} *
+                </label>
+                <input
+                  id="export-name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  maxLength={120}
+                  className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-[#1A1F2B] outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="export-company" className="block text-sm font-semibold mb-2">
+                  {active.formCompany}
+                </label>
+                <input
+                  id="export-company"
+                  name="company"
+                  type="text"
+                  autoComplete="organization"
+                  maxLength={160}
+                  className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-[#1A1F2B] outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="export-email" className="block text-sm font-semibold mb-2">
+                  {active.formEmail} *
+                </label>
+                <input
+                  id="export-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  maxLength={254}
+                  className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-[#1A1F2B] outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="export-country" className="block text-sm font-semibold mb-2">
+                  {active.formCountry} *
+                </label>
+                <select
+                  id="export-country"
+                  name="country"
+                  required
+                  defaultValue=""
+                  className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-[#1A1F2B] outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700"
+                >
+                  <option value="" disabled>
+                    {active.formCountry}
+                  </option>
+                  <option value="United Arab Emirates">{lang === "en" ? "United Arab Emirates" : "الإمارات العربية المتحدة"}</option>
+                  <option value="Oman">{lang === "en" ? "Oman" : "عُمان"}</option>
+                  <option value="Qatar">{lang === "en" ? "Qatar" : "قطر"}</option>
+                  <option value="Saudi Arabia">{lang === "en" ? "Saudi Arabia" : "المملكة العربية السعودية"}</option>
+                  <option value="Bahrain">{lang === "en" ? "Bahrain" : "البحرين"}</option>
+                  <option value="Kuwait">{lang === "en" ? "Kuwait" : "الكويت"}</option>
+                  <option value="Other">{lang === "en" ? "Other" : "أخرى"}</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="export-phone" className="block text-sm font-semibold mb-2">
+                  {active.formPhone} *
+                </label>
+                <input
+                  id="export-phone"
+                  name="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  required
+                  maxLength={40}
+                  className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-[#1A1F2B] outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="export-product" className="block text-sm font-semibold mb-2">
+                  {active.formProduct} *
+                </label>
+                <select
+                  id="export-product"
+                  name="product"
+                  required
+                  defaultValue=""
+                  className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-[#1A1F2B] outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700"
+                >
+                  <option value="" disabled>
+                    {active.formSelect}
+                  </option>
+                  <option value="Exhibition Carpet Rolls">{lang === "en" ? "Exhibition Carpet Rolls" : "لفائف سجاد المعارض"}</option>
+                  <option value="Custom Size Exhibition Carpet">{lang === "en" ? "Custom Size Exhibition Carpet" : "سجاد معارض بمقاسات مخصصة"}</option>
+                  <option value="Other Carpet Requirements">{lang === "en" ? "Other Carpet Requirements" : "متطلبات أخرى للسجاد"}</option>
+                </select>
+              </div>
+
+              <div className="md:col-span-2">
+                <label htmlFor="export-quantity" className="block text-sm font-semibold mb-2">
+                  {active.formQuantity}
+                </label>
+                <input
+                  id="export-quantity"
+                  name="quantity"
+                  type="text"
+                  maxLength={100}
+                  placeholder={lang === "en" ? "e.g. 500 m² or 100 rolls" : "مثال: 500 متر مربع أو 100 لفة"}
+                  className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-[#1A1F2B] outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label htmlFor="export-message" className="block text-sm font-semibold mb-2">
+                  {active.formMessage}
+                </label>
+                <textarea
+                  id="export-message"
+                  name="message"
+                  rows={4}
+                  maxLength={2000}
+                  className="w-full rounded border border-gray-300 bg-white px-4 py-3 text-[#1A1F2B] outline-none focus:border-red-700 focus:ring-1 focus:ring-red-700"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={formLoading}
+              className="mt-6 w-full rounded bg-[#C81E3A] px-8 py-4 font-bold text-white transition hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {formLoading ? active.formSending : active.formSubmit}
+            </button>
+
+            {formStatus === "success" && (
+              <p role="status" aria-live="polite" className="mt-4 rounded bg-green-100 p-4 text-center text-green-800">
+                {active.formSuccess}
+              </p>
+            )}
+
+            {formStatus === "error" && (
+              <p role="alert" className="mt-4 rounded bg-red-100 p-4 text-center text-red-800">
+                {active.formError}
+              </p>
+            )}
+          </form>
         </div>
       </section>
 

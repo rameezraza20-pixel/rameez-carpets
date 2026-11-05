@@ -373,8 +373,19 @@ export default function ProductPage() {
                     const result = await res.json();
 
                     if (res.ok && result.success) {
-                      setSubmitted(true);
-                    } else {
+  const dataLayerWindow = window as Window & {
+    dataLayer?: Array<Record<string, unknown>>;
+  };
+
+  dataLayerWindow.dataLayer = dataLayerWindow.dataLayer || [];
+  dataLayerWindow.dataLayer.push({
+    event: "generate_lead",
+    form_name: "Product Catalogue Request",
+    product_name: product.title,
+  });
+
+  setSubmitted(true);
+} else {
                       alert("Failed to send. Please check API settings.");
                     }
                   } catch {
